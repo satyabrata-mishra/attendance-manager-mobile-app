@@ -1,0 +1,1 @@
+const host = "https://attendance-manager-app.onrender.com";
