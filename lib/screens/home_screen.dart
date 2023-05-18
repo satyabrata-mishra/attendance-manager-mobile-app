@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:basic_authetication/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../utils/capitalize_string.dart';
 
@@ -23,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
   var allUsers = [];
+  bool loadingFetch = false, loadingAdd = false;
 
   final subjectName = TextEditingController();
 
@@ -59,48 +64,61 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void fetchAllSubjects() {
-    //API call for fetching subjects for the current user.
-
-    allUsers = [
-      {
-        "_id": "645e5709ae8bc06b42df05c4",
-        "email": "dug7904@gmail.com",
-        "subjectName": "Computer Networking",
-        "attended": 0,
-        "classes": 0,
-        "__v": 0
-      },
-      {
-        "_id": "645e80f3e3f65209d90d8c97",
-        "email": "dug7904@gmail.com",
-        "subjectName": "Operating System Workshop",
-        "attended": 0,
-        "classes": 0,
-        "__v": 0
-      }
-    ];
+  void fetchAllSubjects() async {
+    try {
+      setState(() {
+        loadingFetch = true;
+      });
+      var url = Uri.https(host, '/attendance/get/${user?.email}');
+      await http.get(url).then((value) {
+        setState(() {
+          loadingFetch = false;
+          allUsers = json.decode(value.body);
+        });
+      });
+    } catch (err) {
+      setState(() {
+        loadingFetch = false;
+      });
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
   }
 
-  void addSubject() {
-    //Add subject API call here
-
+  void addSubject() async {
     if (subjectName.text.isEmpty) {
       snackbarWidget(context, "Subject name cannot be empty.", Colors.red);
       return;
     }
-    setState(() {
-      allUsers.add({
-        "_id": "1234",
-        "email": user?.email as String,
-        "subjectName": subjectName.text,
-        "attended": 0,
-        "classes": 0,
-        "__v": 0
+    try {
+      setState(() {
+        loadingAdd = true;
       });
-    });
-    snackbarWidget(
-        context, "${subjectName.text} added successfully.", Colors.green);
+      var url = Uri.https(host, '/attendance/create');
+      await http
+          .post(url,
+              headers: <String, String>{'Content-Type': 'application/json'},
+              body: jsonEncode(<String, String>{
+                "email": user?.email as String,
+                "subjectName": subjectName.text,
+              }))
+          .then((value) {
+        setState(() {
+          allUsers.add(json.decode(value.body));
+        });
+        snackbarWidget(
+            context, "${subjectName.text} added successfully.", Colors.green);
+        setState(() {
+          loadingAdd = false;
+        });
+      });
+    } catch (err) {
+      setState(() {
+        loadingAdd = false;
+      });
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
   }
 
   int findIndex(String id) {
@@ -110,46 +128,102 @@ class _HomeScreenState extends State<HomeScreen> {
     return index;
   }
 
-  void editSubject(
-      String id, String subjectName, int attendclass, int totalClass) {
-    //Edit subject API call here
-
-    setState(() {
-      allUsers[findIndex(id)]["subjectName"] = capitalize(subjectName);
-      allUsers[findIndex(id)]["attended"] = attendclass;
-      allUsers[findIndex(id)]["classes"] = totalClass;
-    });
-    snackbarWidget(context, "Subject edited successfully.", Colors.green);
+  Future<void> editSubject(
+      String id, String subjectName, int attendclass, int totalClass) async {
+    try {
+      var url = Uri.https(host, '/attendance/update');
+      await http
+          .patch(url,
+              headers: <String, String>{'Content-Type': 'application/json'},
+              body: jsonEncode(<String, String>{
+                "id": id,
+                "subjectName": capitalize(subjectName),
+                "attended": attendclass.toString(),
+                "classes": totalClass.toString()
+              }))
+          .then((value) {
+        Map<String, dynamic> map = json.decode(value.body);
+        int ind = findIndex(id);
+        setState(() {
+          allUsers[ind] = map;
+        });
+        snackbarWidget(context, "Subject edited successfully.", Colors.green);
+      });
+    } catch (err) {
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
   }
 
-  void attendedClass(String id) {
-    //Attended class API call here
-
-    setState(() {
-      allUsers[findIndex(id)]["attended"] =
-          int.parse(allUsers[findIndex(id)]["attended"].toString()) + 1;
-      allUsers[findIndex(id)]["classes"] =
-          int.parse(allUsers[findIndex(id)]["classes"].toString()) + 1;
-    });
+  Future<void> attendedClass(String id) async {
+    try {
+      var url = Uri.https(host, '/attendance/attended');
+      await http
+          .patch(url,
+              headers: <String, String>{'Content-Type': 'application/json'},
+              body: jsonEncode(<String, String>{
+                "id": id,
+              }))
+          .then((value) {
+        Map<String, dynamic> map = json.decode(value.body);
+        int ind = findIndex(id);
+        setState(() {
+          allUsers[ind] = map;
+        });
+      });
+    } catch (err) {
+      print(err.toString());
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
   }
 
-  void notAttendedClass(String id) {
-    //Not attended class API call here
-
-    setState(() {
-      allUsers[findIndex(id)]["classes"] =
-          int.parse(allUsers[findIndex(id)]["classes"].toString()) + 1;
-    });
+  Future<void> notAttendedClass(String id) async {
+    try {
+      var url = Uri.https(host, '/attendance/notattended');
+      await http
+          .patch(url,
+              headers: <String, String>{'Content-Type': 'application/json'},
+              body: jsonEncode(<String, String>{
+                "id": id,
+              }))
+          .then((value) {
+        Map<String, dynamic> map = json.decode(value.body);
+        int ind = findIndex(id);
+        setState(() {
+          allUsers[ind] = map;
+        });
+      });
+    } catch (err) {
+      print(err.toString());
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
   }
 
-  void deleteSubject(String id) {
-    //Delete subject API call here
-
-    String temp = allUsers[findIndex(id)]["subjectName"].toString();
-    setState(() {
-      allUsers.removeAt(findIndex(id));
-    });
-    snackbarWidget(context, "${temp} deleted successfully.", Colors.green);
+  Future<void> deleteSubject(String id) async {
+    try {
+      var url = Uri.https(host, '/attendance/delete');
+      await http
+          .delete(url,
+              headers: <String, String>{'Content-Type': 'application/json'},
+              body: jsonEncode(<String, String>{
+                "id": id,
+              }))
+          .then((value) {
+        setState(() {
+          allUsers.removeAt(findIndex(id));
+        });
+        snackbarWidget(
+            context,
+            "${json.decode(value.body)["subjectName"]} deleted successfully.",
+            Colors.green);
+      });
+    } catch (err) {
+      print(err.toString());
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
   }
 
   List<Widget> getList() {
@@ -198,26 +272,30 @@ class _HomeScreenState extends State<HomeScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Container(
-          margin: EdgeInsets.fromLTRB(
-              0, MediaQuery.of(context).size.height * 0.12, 0, 0),
-          child: SingleChildScrollView(
-            child: allUsers.length == 0
-                ? Container(
-                    margin: EdgeInsets.fromLTRB(
-                        0, MediaQuery.of(context).size.height * 0.2, 0, 0),
-                    child: Image.asset(
-                      "lib/assets/pikachu.png",
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: getList(),
-                  ),
-          ),
-        ),
+        child: loadingFetch
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Container(
+                margin: EdgeInsets.fromLTRB(
+                    0, MediaQuery.of(context).size.height * 0.12, 0, 0),
+                child: SingleChildScrollView(
+                  child: allUsers.length == 0
+                      ? Container(
+                          margin: EdgeInsets.fromLTRB(0,
+                              MediaQuery.of(context).size.height * 0.2, 0, 0),
+                          child: Image.asset(
+                            "lib/assets/pikachu.png",
+                            height: MediaQuery.of(context).size.height * 0.3,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: getList(),
+                        ),
+                ),
+              ),
       ),
       floatingActionButton: GestureDetector(
         onTap: () {
@@ -229,23 +307,29 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(23),
               color: const Color.fromRGBO(17, 17, 17, 1)),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              Text(
-                " Add Subject",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 17,
+          child: loadingAdd
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      " Add Subject",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

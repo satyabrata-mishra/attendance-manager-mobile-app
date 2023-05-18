@@ -1,1 +1,2 @@
-const host = "https://attendance-manager-app.onrender.com";
+const host = "attendance-manager-app.onrender.com";
+const hostedSiteLink = "https://attendance-manager-app.onrender.com";
