@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:basic_authetication/utils/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +12,7 @@ import '../widgets/textfield_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/subject_widget.dart';
 
+import '../utils/constants.dart';
 import '../utils/colors_utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -142,10 +142,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 "classes": totalClass.toString()
               }))
           .then((value) {
-        Map<String, dynamic> map = json.decode(value.body);
         int ind = findIndex(id);
         setState(() {
-          allUsers[ind] = map;
+          allUsers[ind] = json.decode(value.body);
         });
         snackbarWidget(context, "Subject edited successfully.", Colors.green);
       });
@@ -165,10 +164,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 "id": id,
               }))
           .then((value) {
-        Map<String, dynamic> map = json.decode(value.body);
         int ind = findIndex(id);
         setState(() {
-          allUsers[ind] = map;
+          allUsers[ind] = json.decode(value.body);
         });
       });
     } catch (err) {
@@ -188,10 +186,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 "id": id,
               }))
           .then((value) {
-        Map<String, dynamic> map = json.decode(value.body);
         int ind = findIndex(id);
         setState(() {
-          allUsers[ind] = map;
+          allUsers[ind] = json.decode(value.body);
         });
       });
     } catch (err) {
@@ -220,7 +217,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Colors.green);
       });
     } catch (err) {
-      print(err.toString());
       snackbarWidget(
           context, "Some internal error occurred.Try again later.", Colors.red);
     }

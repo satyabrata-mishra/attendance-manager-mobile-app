@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.basic_authetication">
    <application
-        android:label="Attendance Manager"
+        android:label="Attendance"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
