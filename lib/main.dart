@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
         SwitchScreen.routeName: (context) => SwitchScreen(),
         HomeScreen.routeName: (context) => HomeScreen(),
-        ProfileScreen.routeName: (context) => ProfileScreen(0, 0),
+        ProfileScreen.routeName: (context) => ProfileScreen(),
       },
     );
   }

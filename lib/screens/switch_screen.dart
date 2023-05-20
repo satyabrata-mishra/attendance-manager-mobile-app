@@ -1,6 +1,11 @@
 //The purpose of this screen is to switch between home and profile in BottomNavigationBar.
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+
+import '../widgets/snackbar_widget.dart';
 
 import './signin_screen.dart';
 import './home_screen.dart';
@@ -16,7 +21,8 @@ class SwitchScreen extends StatefulWidget {
 
 class _SwitchScreenState extends State<SwitchScreen> {
   var _index = 0;
-
+  final user = FirebaseAuth.instance.currentUser;
+  var attended = 0, total = 0;
   @override
   void initState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
@@ -31,7 +37,7 @@ class _SwitchScreenState extends State<SwitchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _index == 0 ? HomeScreen() : ProfileScreen(15, 20),
+      body: _index == 0 ? HomeScreen() : ProfileScreen(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white60,

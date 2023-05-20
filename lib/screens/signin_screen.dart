@@ -1,8 +1,8 @@
-import 'package:basic_authetication/screens/forgot_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import './forgot_password_screen.dart';
 import './signup_screen.dart';
 import './switch_screen.dart';
 

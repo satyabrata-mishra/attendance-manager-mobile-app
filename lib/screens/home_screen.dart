@@ -4,14 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/capitalize_string.dart';
-
 import '../widgets/button_widget.dart';
 import '../widgets/snackbar_widget.dart';
 import '../widgets/textfield_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/subject_widget.dart';
 
+import '../utils/capitalize_string.dart';
 import '../utils/constants.dart';
 import '../utils/colors_utils.dart';
 

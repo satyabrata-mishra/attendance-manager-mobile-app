@@ -1,13 +1,16 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 import '../utils/colors_utils.dart';
+import '../utils/constants.dart';
+
 import '../widgets/snackbar_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final int attended, classes;
-  ProfileScreen(this.attended, this.classes);
   static const routeName = "/profile-screen";
 
   @override
@@ -17,22 +20,50 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late User? user = FirebaseAuth.instance.currentUser;
   var isLoading = false;
+  var attended = 0, total = 0;
+
+  @override
+  void initState() {
+    fetchAllSubjects();
+    super.initState();
+  }
+
+  void fetchAllSubjects() async {
+    try {
+      var url = Uri.https(host, '/attendance/get/${user?.email}');
+      await http.get(url).then((value) {
+        List response = json.decode(value.body);
+        int a = 0, b = 0;
+        for (int i = 0; i < response.length; i++) {
+          a += int.parse(response[i]["attended"].toString());
+          b += int.parse(response[i]["classes"].toString());
+        }
+        setState(() {
+          attended = a;
+          total = b;
+        });
+      });
+    } catch (err) {
+      snackbarWidget(
+          context, "Some internal error occurred.Try again later.", Colors.red);
+    }
+  }
 
   void sendEmailVerificationLink() async {
     try {
       setState(() {
-        isLoading=true;
+        isLoading = true;
       });
       FirebaseAuth.instance.currentUser?.sendEmailVerification().then((value) {
         setState(() {
-          isLoading=false;
+          isLoading = false;
         });
         snackbarWidget(context,
             "Email verification link sent to ${user?.email}", Colors.green);
       });
     } catch (err) {
       setState(() {
-        isLoading=false;
+        isLoading = false;
       });
       snackbarWidget(context, err.toString(), Colors.red);
     }
@@ -215,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Column(
                             children: [
                               Text(
-                                widget.attended.toString(),
+                                attended.toString(),
                                 style: buildMontserrat(
                                   const Color(0xFF000000),
                                   fontWeight: FontWeight.bold,
@@ -237,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Column(
                             children: [
                               Text(
-                                widget.classes.toString(),
+                                total.toString(),
                                 style: buildMontserrat(
                                   const Color(0xFF000000),
                                   fontWeight: FontWeight.bold,

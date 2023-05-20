@@ -104,6 +104,16 @@ class _SubjectWidgetState extends State<SubjectWidget> {
     widget.notAttendedClassFun(widget._id);
   }
 
+  get status {
+    if (widget.attendedClass == 0 && widget.totalClass == 0) {
+      return "NA";
+    }
+    if ((widget.attendedClass / widget.totalClass) * 100 >= 75) {
+      return "On Track";
+    }
+    return "Off Track";
+  }
+
   void showDeleteBox() {
     AwesomeDialog(
       context: context,
@@ -164,7 +174,7 @@ class _SubjectWidgetState extends State<SubjectWidget> {
                 style: textStyle,
               ),
               Text(
-                "Status: NA",
+                "Status: ${status}",
                 style: textStyle,
               ),
               Row(
