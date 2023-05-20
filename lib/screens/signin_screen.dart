@@ -16,7 +16,7 @@ import '../widgets/image_widget.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
-  static const routeName = "/";
+  static const routeName = "/sign-in";
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();

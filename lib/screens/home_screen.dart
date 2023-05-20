@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../widgets/button_widget.dart';
+import '../widgets/loading_widget.dart';
 import '../widgets/snackbar_widget.dart';
 import '../widgets/textfield_widget.dart';
 import '../widgets/drawer_widget.dart';
@@ -269,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: loadingFetch
             ? Center(
-                child: CircularProgressIndicator(),
+                child: loadingWidget(MediaQuery.of(context).size.height * 0.08),
               )
             : Container(
                 margin: EdgeInsets.fromLTRB(

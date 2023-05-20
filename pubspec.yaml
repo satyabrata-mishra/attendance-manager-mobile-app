@@ -79,6 +79,7 @@ flutter:
      - lib/assets/image-not-avaliable.png
      - lib/assets/attendance-logo.png
      - lib/assets/pikachu.png
+     - lib/assets/loader.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

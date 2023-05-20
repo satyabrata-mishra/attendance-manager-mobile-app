@@ -1,3 +1,4 @@
+import 'package:basic_authetication/screens/opening_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: HomeScreen(),
       routes: {
+        OpeningScreen.routeName:(context) => OpeningScreen(),
         SignInScreen.routeName: (context) => SignInScreen(),
         SignUpScreen.routeName: (context) => SignUpScreen(),
         ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
