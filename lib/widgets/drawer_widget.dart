@@ -84,29 +84,24 @@ Drawer drawer_widget(BuildContext context) {
             _logout(context);
           },
         ),
-        Container(
-          margin: EdgeInsets.fromLTRB(
-              0, MediaQuery.of(context).size.height * 0.54, 0, 0),
-          padding: EdgeInsets.fromLTRB(37, 0, 0, 0),
-          child: Row(
-            children: [
-              Icon(
-                Icons.verified_outlined,
-                color: Colors.white,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                "Version 1.0.0",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  letterSpacing: 0.8,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.45,
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.verified_outlined,
+            color: Colors.white,
           ),
-        )
+          title: const Text(
+            "Version 1.0.0",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              letterSpacing: 0.8,
+            ),
+          ),
+          enabled: false,
+        ),
       ],
     ),
   );

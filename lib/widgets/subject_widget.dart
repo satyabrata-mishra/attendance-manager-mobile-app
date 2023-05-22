@@ -42,11 +42,12 @@ class _SubjectWidgetState extends State<SubjectWidget> {
       builder: (context) {
         return Card(
           margin: EdgeInsets.fromLTRB(
-            10,
-            MediaQuery.of(context).size.height * 0.30,
-            10,
-            MediaQuery.of(context).size.height * 0.30,
-          ),
+              0,
+              MediaQuery.of(context).viewInsets.bottom > 0
+                  ? MediaQuery.of(context).viewInsets.bottom - 60
+                  : MediaQuery.of(context).size.height * 0.55,
+              0,
+              0),
           color: Colors.blueGrey,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -79,8 +80,6 @@ class _SubjectWidgetState extends State<SubjectWidget> {
   }
 
   void editSubject() {
-    //Edit subject API call here
-
     if (_subjectName.text.isEmpty ||
         _total.text.isEmpty ||
         _attended.text.isEmpty) {

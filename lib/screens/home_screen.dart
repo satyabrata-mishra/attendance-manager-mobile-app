@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var allUsers = [];
   bool loadingFetch = false, loadingAdd = false;
+  double margin = 200;
 
   final subjectName = TextEditingController();
 
@@ -42,9 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.blueGrey,
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.50,
-      ),
       builder: (context) {
         return Padding(
           padding: const EdgeInsets.all(10),
@@ -321,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        fontSize: 17,
+                        fontSize: 15,
                       ),
                     ),
                   ],
