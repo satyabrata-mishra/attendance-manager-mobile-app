@@ -1,8 +1,8 @@
-import 'package:basic_authetication/screens/opening_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
+import './screens/opening_screen.dart';
 import './screens/switch_screen.dart';
 import './screens/forgot_password_screen.dart';
 import './screens/profile_screen.dart';

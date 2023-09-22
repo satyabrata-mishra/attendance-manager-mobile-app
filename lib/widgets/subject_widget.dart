@@ -96,10 +96,17 @@ class _SubjectWidgetState extends State<SubjectWidget> {
   }
 
   void attendedClass() {
+    setState(() {
+      widget.totalClass++;
+      widget.attendedClass++;
+    });
     widget.attendedClassFun(widget._id);
   }
 
   void notAttendedClass() {
+    setState(() {
+      widget.totalClass++;
+    });
     widget.notAttendedClassFun(widget._id);
   }
 
@@ -108,9 +115,22 @@ class _SubjectWidgetState extends State<SubjectWidget> {
       return "NA";
     }
     if ((widget.attendedClass / widget.totalClass) * 100 >= 75) {
-      return "On Track";
+      var x = (4 * widget.attendedClass - 3 * widget.totalClass) / 3;
+      x = x < 1 ? 0 : x;
+      if (x == 0) {
+        return "You can't miss any class.";
+      }
+      if (int.parse(x.toStringAsFixed(0)) == 1) {
+        return "You can miss next class.";
+      }
+      return "You can miss next ${x.toStringAsFixed(0)} classes.";
     }
-    return "Off Track";
+    var x =
+        (3 * widget.totalClass - 4 * widget.attendedClass).toStringAsFixed(0);
+    if (int.parse(x) == 1) {
+      return "Please attend the next class.";
+    }
+    return "Please attend next ${x} classes.";
   }
 
   void showDeleteBox() {
