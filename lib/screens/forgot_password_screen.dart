@@ -94,7 +94,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 imageWidget("lib/assets/forgot-password.png", context),
                 const SizedBox(height: 20),
                 textfieldWidget(
-                    "Forgot password", Icons.email_outlined, false, _email),
+                    "Enter Email", Icons.email_outlined, false, _email),
                 buttonWidget(
                   context,
                   "SEND PASSWORD RESET LINK",

@@ -139,7 +139,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                textfieldWidget("Enter Email", Icons.person_outline, false,
+                textfieldWidget("Enter Email", Icons.email_outlined, false,
                     _emailTextController),
                 const SizedBox(
                   height: 10,

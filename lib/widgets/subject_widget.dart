@@ -158,7 +158,8 @@ class _SubjectWidgetState extends State<SubjectWidget> {
       letterSpacing: 0.2,
     );
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+      margin: const EdgeInsets.fromLTRB(8, 0, 8, 10),
+      padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
       height: 150,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -174,7 +175,7 @@ class _SubjectWidgetState extends State<SubjectWidget> {
           // color: Colors.red
           ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
@@ -194,7 +195,12 @@ class _SubjectWidgetState extends State<SubjectWidget> {
               ),
               Text(
                 "Status: ${status}",
-                style: textStyle,
+                style: TextStyle(
+                  fontSize: 15.1,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.2,
+                ),
               ),
               Row(
                 children: [
@@ -246,7 +252,7 @@ class _SubjectWidgetState extends State<SubjectWidget> {
                         style: textStyle,
                       ),
                 progressColor:
-                    (widget.attendedClass / widget.totalClass * 100) >= 70
+                    (widget.attendedClass / widget.totalClass * 100) >= 75
                         ? Colors.green
                         : Colors.red,
               ),

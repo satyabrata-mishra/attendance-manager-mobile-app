@@ -163,9 +163,9 @@ class _HomeScreenState extends State<HomeScreen> {
               }))
           .then((value) {
         int ind = findIndex(id);
-        setState(() {
-          allUsers[ind] = json.decode(value.body);
-        });
+        // setState(() {
+        //   allUsers[ind] = json.decode(value.body);
+        // });
       });
     } catch (err) {
       print(err.toString());
@@ -185,9 +185,9 @@ class _HomeScreenState extends State<HomeScreen> {
               }))
           .then((value) {
         int ind = findIndex(id);
-        setState(() {
-          allUsers[ind] = json.decode(value.body);
-        });
+        // setState(() {
+        //   allUsers[ind] = json.decode(value.body);
+        // });
       });
     } catch (err) {
       print(err.toString());

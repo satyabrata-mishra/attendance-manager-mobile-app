@@ -85,7 +85,7 @@ Drawer drawer_widget(BuildContext context) {
           },
         ),
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.45,
+          height: MediaQuery.of(context).size.height * 0.50,
         ),
         ListTile(
           leading: const Icon(
@@ -93,7 +93,7 @@ Drawer drawer_widget(BuildContext context) {
             color: Colors.white,
           ),
           title: const Text(
-            "Version 1.0.0",
+            "Version 1.0.2",
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,

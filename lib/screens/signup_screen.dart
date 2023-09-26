@@ -167,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 20,
                 ),
                 textfieldWidget(
-                    "Enter password", Icons.lock_outline, true, _password),
+                    "Enter Password", Icons.lock_outline, true, _password),
                 buttonWidget(
                   context,
                   "SIGNUP",
