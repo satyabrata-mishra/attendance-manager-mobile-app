@@ -158,7 +158,7 @@ class _SubjectWidgetState extends State<SubjectWidget> {
       letterSpacing: 0.2,
     );
     return Container(
-      margin: const EdgeInsets.fromLTRB(8, 0, 8, 10),
+      margin: const EdgeInsets.fromLTRB(8, 10, 8, 10),
       padding: const EdgeInsets.fromLTRB(3, 0, 0, 0),
       height: 150,
       width: MediaQuery.of(context).size.width,
